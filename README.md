@@ -182,3 +182,64 @@
 	 *         
 	 */
    
+
+------------------------------------------------
+
+### 客户端
+
+#### 客户端的类
+	Command.java
+	DealReceiveMessage.java
+	GameClient.java
+	Playing.java
+	SendMessage.java
+	TalkingWindow.java
+
+###### 因为客户端这边好多都是和服务器那边相同的，比如“Command.java”，“DealReceiveMessage.java”，所以仅简单介绍一下TalkingWindow.java
+
+##### TalkingWindow.java
+
+###### 聊天窗口，其中运用了Java的Swing功能。其中包括了显示消息的文本域，输入消息的文本框以及发送按钮。作用很简单，显示（不是接收）玩家聊天消息以及服务器的一些通知，比如“游戏开始前准备”
+	public class TalkingWindow extends JFrame{
+		JTextArea ta=new JTextArea("在该窗口进行聊天!\n");
+		JPanel show=new JPanel();
+		JPanel input=new JPanel();
+		JButton jb=new JButton();
+		JScrollPane sp=new JScrollPane(ta);
+		JTextField tf=new JTextField(20);
+		Container c=this.getContentPane();
+		Socket server;
+		public TalkingWindow(String name,Socket server)
+		{
+			ta.setEditable(false);
+			ta.setLineWrap(true);
+			jb.setText("发送");
+			this.setSize(275,300);
+			c.setSize(275,300);//设置JFrame容器的大小
+		this.setVisible(true);
+
+		input.add(tf);
+		input.add(jb);
+		this.add(sp);
+		this.add(input,BorderLayout.SOUTH);
+		this.setTitle("聊天");
+
+		jb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message=tf.getText().toString();
+				if(!message.equals("")) {
+					if(message.equals("/READY")||message.equals("/ready"))
+						new SendMessage(("//ready "),server);		//这里就是当你输入的时“/READY”时的一个处理，让服务器知道你准备了
+					else new SendMessage(("//msg <"+name+">"+message),server);
+					tf.setText("");
+				}
+			}
+		});
+		}
+		public void Put(String message)
+		{
+			ta.append(message+'\n');
+		}
+	}
+###### 在服务器“DealReceiveMessage.java”类中，有专门的处理准备消息的方法
+	else if(msgtype.equals("ready"))ready(i);
