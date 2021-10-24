@@ -199,7 +199,7 @@
 
 ##### TalkingWindow.java
 
-###### 聊天窗口，其中运用了Java的Swing功能。其中包括了显示消息的文本域，输入消息的文本框以及发送按钮。作用很简单，显示（不是接收）玩家聊天消息以及服务器的一些通知，比如“游戏开始前准备”
+###### 聊天窗口，其中运用了Java的Swing功能。在窗口中包括了显示消息的文本域，输入消息的文本框以及发送按钮。作用很简单，显示（不是接收）玩家聊天消息以及服务器的一些通知，比如“游戏开始前准备”
 	public class TalkingWindow extends JFrame{
 		JTextArea ta=new JTextArea("在该窗口进行聊天!\n");
 		JPanel show=new JPanel();
