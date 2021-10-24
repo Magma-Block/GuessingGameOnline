@@ -129,6 +129,30 @@
    
    #### 游戏开始前准备
    ###### 在人数已满时服务器会要求玩家在弹出的聊天框（客户端部分有讲）中输入“/READY”来进行准备，同时也会有一个线程在重复判断是否全部玩家都已准备，如果全部玩家都已准备，则新建游玩“Playing.java”类实例，游戏开始。
+	class BeforePlay implements Runnable{
+			boolean begin=false;
+			List<Client> clients;
+			int maxplayer;
+			public BeforePlay(List<Client> clients,int maxplayer) {
+				this.clients=clients;
+				this.maxplayer=maxplayer;
+			}
+			public void run() {
+				while(true) {
+					//System.out.println("检测中....");
+					begin=true;
+					for(Client c:clients)
+						if(c.ready==false) {
+							begin=false;
+							break;
+						}
+					if(begin)break;
+				}
+				System.out.println("已开始游戏");
+				playing =new Playing();
+				playing.init(maxplayer, clients);
+			}
+		}
       
 ------------------------------------------------
 
